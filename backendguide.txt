@@ -1,0 +1,72 @@
+1: Web api fajl
+2:nugetek(Core, Design, Sqlite, Toos, CodeGeneraion, Entity, SwahsBuckle ha kell:)
+3:model mappa ket tabla egy a tobbhoz kell a key a primaryk fole
+	3b: egy tablahoz: list<tobbtabla>? tobbtablatobbeszam get set 
+	3c: tobb tablahoz:public int egytablaId { get; set; }
+			[JsonIgnore]
+			[ForeignKey("id")]
+			public egytabla? egytabla { get; set; }
+4:Data mappa=>fajlnevContext.cs
+ public class IngatlanContext : DbContext
+ {
+     public IngatlanContext(DbContextOptions<IngatlanContext> options) : base(options) { }
+     public DbSet<Kategoria> Kategoriak{ get; set; }
+     public DbSet<Ingatlan> Ingatlanok { get; set; }
+ }
+5.appsetting json(mindket reszet ird at a sajatodra)
+  "ConnectionStrings": {
+    "IngatlanContext": "Data Source=Ingatlan.db"
+  },
+6.program.cs (ugyan az legyen mint a json fileba)
+builder.Services.AddDbContext<IngatlanContext>(options =>
+options.UseSqlite(builder.Configuration.GetConnectionString("IngatlanContext")));
+7.view packaage manager console
+Add-Migration Init
+Update-Database
+8.Controller mappa add controller api using entity tobbes szam
+9. hosszabik controller getje
+   public async Task<ActionResult<IEnumerable<HosszabikDTO>>> GetIngatlanok()
+   {
+       var ingatlanok = await _context.Hosszabiktobbeszszam.Include(x => x.rovidebbik).ToListAsync();
+       var ingatlanokDTO = new List<HosszabiktobbeszamDTO>();
+       foreach (var hosszab in hosszabiktobbeszam)
+       {
+           ingatlanokDTO.Add(new IngatlanokDTO
+           {
+               Id = ingatlan.Id,
+               Leiras = ingatlan.Leiras,
+               HirdetesKezdete = ingatlan.HirdetesKezdete.ToString("yyyy-MM-dd"),
+               HirdetesVege = ingatlan.HirdetesVege.ToString("yyyy-MM-dd"),
+               Ar = ingatlan.Ar,
+               Hitelkepes = ingatlan.Hitelkepes,
+               Kategória = ingatlan.Kategoria.Nev,
+           }
+           );
+       }
+       return ingatlanokDTO; 
+   }
+	9b:Hozz l;tre egy dtot
+	 
+10. hosszabik ids getje
+        public async Task<ActionResult<IngatlanokDTO>> GetIngatlan(int id)
+        {
+            var ingatlanok = await _context.Ingatlanok.Include(x => x.Kategoria).FirstOrDefaultAsync(x => x.Id == id);
+            var ingatlanokDTO = new IngatlanokDTO
+            {
+                Id = ingatlanok.Id,
+                Leiras = ingatlanok.Leiras,
+                HirdetesKezdete = ingatlanok.HirdetesKezdete.ToString("yyyy-MM-dd"),
+                HirdetesVege = ingatlanok.HirdetesVege.ToString("yyyy-MM-dd"),
+                Ar = ingatlanok.Ar,
+                Hitelkepes = ingatlanok.Hitelkepes,
+                Kategória = ingatlanok.Kategoria.Nev,
+            };
+            return ingatlanokDTO;
+
+11.Swagger postman tesztel;s
+postamn collection es abban lehet a bodyban modositani a sswagger curls
+
+
+
+
+

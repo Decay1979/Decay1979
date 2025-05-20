@@ -1,0 +1,47 @@
+BASIC FILTERING & SELECTION
+var adults = list.Where(x => x.Age >= 18);
+var names = list.Select(x => x.Name);
+
+SINGLE OR FIRST ELEMENT
+var firstItem = list.First();                     
+var firstOrNone = list.FirstOrDefault();         
+var specific = list.FirstOrDefault(x => x.Id == 10);
+S
+EXISTENCE CHECKS
+bool anyAdults = list.Any(x => x.Age >= 18);
+bool allAdults = list.All(x => x.Age >= 18);
+
+COUNTING
+int total = list.Count();
+int under30 = list.Count(x => x.Age < 30);
+
+ORDERING
+var sorted = list.OrderBy(x => x.Name);
+var sortedDesc = list.OrderByDescending(x => x.Age);
+
+GROUPING
+var grouped = list.GroupBy(x => x.Department);
+foreach (var group in grouped)
+{
+    Console.WriteLine($"Department: {group.Key}");
+    foreach (var item in group)
+        Console.WriteLine($" - {item.Name}");
+}
+var uniqueAges = list.Select(x => x.Age).Distinct();
+
+AGGREGATION
+int totalAge = list.Sum(x => x.Age);
+double averageAge = list.Average(x => x.Age);
+int maxAge = list.Max(x => x.Age);
+int minAge = list.Min(x => x.Age);
+
+CONVERSION
+var asList = query.ToList();
+var asArray = query.ToArray();
+var asDictionary = list.ToDictionary(x => x.Id);
+
+FLATTENING (SelectMany)
+var allOrders = customers.SelectMany(c => c.Orders);
+
+
+

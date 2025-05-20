@@ -1,0 +1,31 @@
+forms app
+
+Class letrehozasa (Vedd fel hozza a listat es ha kell a tobbbit is a class alatt
+	3a. Ha inditasra akkor form1be olvasd be es egy listaba irasd ki
+	3b ha gombra akkor huzz be egy gombot aztan olvasd be es irasd ki egy lstaba a button onclickben
+
+kiiaras listboxba
+ foreach (Museum adat in lista)
+ {
+     ListViewItem item = new ListViewItem(adat.TeremAz);
+     item.SubItems.Add(Convert.ToString(adat.MuveszNeve));
+     item.SubItems.Add(Convert.ToString(adat.AlkotasNeve));
+     item.SubItems.Add((Convert.ToString(adat.Tipusa)));
+     listView1.Items.Add(item);
+ }
+
+kiratas txtbe listbozot csereld
+StreamWriter sw = new StreamWriter("terem.txt", true);
+foreach (string item in listBox1.Items)
+{
+    sw.WriteLine(item);
+}
+sw.Close();
+
+lista hozzaadasa listboxhoz
+ listBox1.Items.Clear();
+ listBox1.Items.AddRange(kialitottak.ToArray());
+
+gombra kilepes:
+	 MessageBox.Show("Biztos hogy kilépsz?");
+ 	 Application.Exit();

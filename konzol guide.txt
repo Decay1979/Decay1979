@@ -1,0 +1,11 @@
+beolvasas classbe
+mainbe string lines
+	list<tipus>
+	for	
+	var split lines i re
+	lista.add(new classneve
+{
+
+});
+
+
